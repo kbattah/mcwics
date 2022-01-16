@@ -1,0 +1,108 @@
+
+import statistics
+import spotipy
+import matplotlib.pyplot as plt
+import numpy as np
+from spotipy.oauth2 import SpotifyClientCredentials
+
+client_credentials_manager = SpotifyClientCredentials(client_id="e28e187c50da4e9fabf3fb0a33f4ca7e", client_secret="6d94d0b1ecc644338e0815df3e877402")
+sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
+
+play=input("Paste your playlist's URL here:\n")
+
+playlist_link = "https://open.spotify.com/playlist/37i9dQZF1DWYzKmy0vGGcY"
+playlist_URI = play.split("/")[-1].split("?")[0]
+track_uris = [x["track"]["uri"] for x in sp.playlist_tracks(playlist_URI)["items"]]
+
+pop=[]
+index=[]
+dates=[]
+valences=[]
+dance=[]
+i=1;
+
+for track in sp.playlist_tracks(playlist_URI)["items"]:
+    #URI
+    track_uri = track["track"]["uri"]
+    
+    #Track name
+    track_name = track["track"]["name"]
+    
+    #Album for date
+    album = track["track"]["album"]["name"]
+    track_date = track["track"]["album"]["release_date"]
+    
+    #Popularity of the track
+    track_pop = track["track"]["popularity"]
+    
+    #Valence
+    features=sp.audio_features(track_uri)[0]
+    track_valence = features['valence']
+    track_danceability = features['danceability']
+    
+    #if (track_pop!=0):
+    
+    dates.append(int(track_date[0:4]))
+    pop.append(track_pop)
+    valences.append(track_valence)
+    dance.append(track_danceability)
+    index.append(i)
+    i+=1
+
+insult="You're "
+
+for feature in [dates, pop, valences, dance]:
+    
+    x=np.array(index)
+    y=np.array(feature)
+
+    avg = statistics.mean(feature)
+
+    plt.scatter(x, y)
+    plt.plot([1,i], [avg, avg], label="the average you")
+    
+    if feature==dates:
+        norm=2000
+        plt.title("RELEASE DATES OF YOUR SONGS")
+        alabel="Corny expired grandma                   Uncultivated ignorant teen"
+        if avg<2000:
+            insult+="a corny expired "
+        else:
+            insult+="an uncultivated ignorant "
+        
+    elif feature==pop:
+        norm=50
+        plt.title("POPULARITY OF YOUR SONGS")
+        alabel="Arrogant indie                                 Mainstream pigeon"
+        if avg<=50:
+            insult+="arrogant indie "
+        else:
+            insult+="mainstream pigeon "
+            
+    elif feature==valences:
+        norm=0.5
+        plt.title("MOOD OF YOUR SONGS")
+        alabel="Depressed crybaby                Over-optimistic happiness-faker"
+        if avg<=0.5:
+            insult+="depressed crybaby "
+        else:
+            insult+="over-optimistic happiness-faker "
+            
+    else:
+        norm=0.5
+        plt.title("DANCEABILITY OF YOUR SONGS")
+        alabel="Zero moves :/ sry                     Hyperactive arrogant dancer"
+        if avg<=0.5:
+            insult+="with 0 moves."
+        else:
+            insult+="hyperactive arrogant dancer."
+    
+    plt.xlabel("Track number")
+    plt.ylabel(alabel)
+    plt.plot([1,i], [norm, norm], 'r', label='the Norm')
+    plt.legend(loc="upper right")
+    plt.show()
+
+print('\n'+insult)
+
+    
