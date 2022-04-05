@@ -64,38 +64,38 @@ for feature in [dates, pop, valences, dance]:
     if feature==dates:
         norm=2000
         plt.title("RELEASE DATES OF YOUR SONGS")
-        alabel="Corny expired grandma                   Uncultivated ignorant teen"
+        alabel="pretentious boomer                           literally a kid"
         if avg<2000:
-            insult+="a corny expired "
+            insult+="pretentious boomer, "
         else:
-            insult+="an uncultivated ignorant "
+            insult+="uncultivated mf, "
         
     elif feature==pop:
         norm=50
         plt.title("POPULARITY OF YOUR SONGS")
-        alabel="Arrogant indie                                 Mainstream pigeon"
+        alabel="\"i bet you can even name one of their songs\"                                 only listens to spotify's top 50"
         if avg<=50:
-            insult+="arrogant indie "
+            insult+="\"i bet you can even name one of their songs\" headass, "
         else:
-            insult+="mainstream pigeon "
+            insult+=", only listens to spotify's top 50, "
             
     elif feature==valences:
         norm=0.5
         plt.title("MOOD OF YOUR SONGS")
-        alabel="Depressed crybaby                Over-optimistic happiness-faker"
+        alabel="we get it you're sad                          wow! looks like therapy helps!"
         if avg<=0.5:
-            insult+="depressed crybaby "
+            insult+=", thinks their personality is listening to sad shit, "
         else:
-            insult+="over-optimistic happiness-faker "
+            insult+=", who sometimes listens to happy shit! congrats, looks like the therapy helped!,  "
             
     else:
         norm=0.5
         plt.title("DANCEABILITY OF YOUR SONGS")
-        alabel="Zero moves :/ sry                     Hyperactive arrogant dancer"
+        alabel="wow you must be fun at parties                              no one wants to give you the aux cord at parties, stop it"
         if avg<=0.5:
             insult+="with 0 moves."
         else:
-            insult+="hyperactive arrogant dancer."
+            insult+="aux-cord dictator."
     
     plt.xlabel("Track number")
     plt.ylabel(alabel)
